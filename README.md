@@ -96,6 +96,64 @@ print(api.get_player_about(request))
 # Example: Idk, something probably
 ```
 
+### Get Mapset Page:
+Returns a request object that can be used with the other functions that this repository offers
+```python
+map = api.return_mapset_page(input("Code: "))
+# Do something with map...
+```
+
+### Get Mapset Difficulty Codes:
+Returns the various difficulty codes of the mapset in an array
+```python
+print(api.get_mapset_difficulty_codes(map))
+# Example: ['#osu/2258751', '#osu/2258753', '#osu/2258857', '#osu/2258752', '#osu/2256655']
+```
+
+### Select Specific Difficulty:
+Returns a request to the beatmap's specific difficulty page
+```python
+diff = api.return_specific_mapset_difficulty(beatmap_code, difficulty_code)
+# Do something with diff...
+```
+
+### Get Difficulty Stats:
+Returns a dictionary containing the stats for a specific difficulty:
+```python
+print(api.get_difficulty_stats(diff))
+# Example: {'length': '2:49',
+#            'bpm': '160',
+#            'circle num': '261',
+#            'slider num': '151',
+#            'circle size': '4',
+#            'hp drain': '5', 'accuracy':
+#            '6', 'ar': '7',
+#            'sr': '3.47'}
+```
+
+### Get Mapset Stats:
+Returns a dictionary containing the stats of a whole mapset
+```python
+print(api.get_mapset_stats(map))
+# Example: {'title': 'Less Than Three (Ricardo Autobahn Remix)',
+#            'author': 'Becky', 'mapper': 'Sonnyc',
+#            'status': 'Ranked'}
+```
+
+### Get Mapset Likes
+Returns both the likes and plays a mapset has
+```python
+print(api.get_mapset_likes(map))
+# Example: {'plays': '2,925', 'likes': '11'}
+```
+
+### Get Mapset Description
+Returns a string containing the description of a map
+```python
+print(api.get_mapset_description(map))
+# Example: Idk, something probably
+```
+
 
 # Requirements:
 * requests-html
