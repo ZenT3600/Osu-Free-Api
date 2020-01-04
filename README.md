@@ -48,7 +48,7 @@ print(api.get_player_best_score(request))
 ```
 
 ### Get Player First Place Plays Count:
-Returns how mnay first place plays a player has performed
+Returns how many first place plays a player has performed
 ```python
 print(api.get_player_first_place_plays(request))
 # Example: 4
@@ -99,7 +99,7 @@ print(api.get_player_about(request))
 ### Get Mapset Page:
 Returns a request object that can be used with the other functions that this repository offers
 ```python
-map = api.return_mapset_page(input("Code: "))
+map = api.return_mapset_page(int(input("Code: ")))
 # Do something with map...
 ```
 
@@ -157,6 +157,7 @@ print(api.get_mapset_description(map))
 
 # Requirements:
 * requests-html
+* typing
 
 
 
