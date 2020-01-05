@@ -194,6 +194,62 @@ print(api.get_full_news_content(spec))
 # Idk, something probably
 ```
 
+### Get Forums Codes
+Returns the available forum codes
+```python
+print(api.get_forums_codes())
+# {'development': 2,
+#  'gameplay': 13,
+#  'tournaments': 55,
+#  'skinning': 15,
+#  'help': 5,
+#  'mapping discussion': 56,
+#  'modding queues': 60,
+#  ...
+#  ..
+#  .}
+```
+
+### Return Forums Page
+Returns a request to osu's forums page that can be used with the other functions that this repository offers
+```python
+forums = return_forums_page(CODE)
+# Do something with forums
+```
+
+### Get Newest Post For The Category
+Returns the newest post for the selected category
+```python
+print(api.get_newest_post(forums)
+# {'title': 'How to properly "report" or handle Mixed Skins.',
+#  'author': 'Dntm8kmeeatu',
+#  'replies': '39', 'views':
+#  '28,130', 'timeago':
+#  '3 months ago',
+#  'link': 'https://osu.ppy.sh/community/forums/topics/704698'}
+```
+
+### Return Specific Post Page
+Returns a request to a specific post's page that can be used with the other functions that this repository offers
+```python
+post = return_post_page("https://osu.ppy.sh/community/forums/topics/704698")
+# Do something with post
+```
+
+### Get Post's Question
+Returns a post's question
+```python
+print(api.get_post_question(post))
+# Idk, something probably
+```
+
+### Get Post's Answers
+Returns a list containing the post's answers
+```python
+print(api.get_post_answers(post))
+# ['Is it ok to post mixed skin outside osu community?', 'A Lunime user that plays osu!', ..., .., .]
+```
+
 
 # Requirements:
 * requests-html
