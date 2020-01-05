@@ -44,6 +44,91 @@ class Global:
         "date",
         "link"
     ]
+    forums = {
+        "development": 2,
+        "gameplay": 13,
+        "tournaments": 55,
+        "skinning": 15,
+        "help": 5,
+        "mapping discussion": 56,
+        "modding queues": 60,
+        "beatmap projects": 53,
+        "ranked beatmaps": 14,
+        "general": 7,
+        "offtopic": 52,
+        "introductions": 8,
+        "music hall": 91,
+        "otaku culture": 75,
+        "videogames": 17,
+        "art": 103
+    }
+    post = [
+        "title",
+        "author",
+        "replies",
+        "views",
+        "timeago",
+        "link"
+    ]
+
+# --------------
+# FORUM Down Here
+# --------------
+
+
+def get_forums_codes() -> Dict[str, int]:
+    """
+    Returns a dictionary containing the available forum codes
+    """
+    return Global.forums
+
+
+# Base Forums URL --Z https://osu.ppy.sh/community/forums/{CODE}
+def return_forums_page(code: int) -> HTMLSession:
+    """
+    Returns a request to osu's forums page that can be used with the other functions that this repository offers
+    """
+    session = HTMLSession()
+    req = session.get(f"https://osu.ppy.sh/community/forums/{code}")
+    req.html.render()
+    return req
+
+
+def get_newest_post(req: HTMLSession) -> Dict[str, str]:
+    """
+    Returns the newest post's data
+    """
+    title = req.html.find(".forum-topic-entry__content")[0].find("a")[0].text
+    author = req.html.find(".forum-topic-entry__link ")[0].text
+    replies = req.html.find(".forum-topic-entry__count")[0].text
+    views = req.html.find(".forum-topic-entry__count")[1].text
+    timeago = req.html.find(".timeago")[2].text
+    link = req.html.find(".forum-topic-entry__content")[0].find("a")[0].attrs["href"]
+    return dict(zip(Global.post, [title, author, replies, views, timeago, link]))
+
+
+def return_post_page(link: str) -> HTMLSession:
+    """
+    Returns a request to a specific forums post's page that can be used with the other functions that this repository offers
+    """
+    session = HTMLSession()
+    req = session.get(link)
+    req.html.render()
+    return req
+
+
+def get_post_question(req: HTMLSession) -> str:
+    """
+    Returns a post's question
+    """
+    return req.html.find(".bbcode")[0].text
+
+
+def get_post_answers(req: HTMLSession) -> List[str]:
+    """
+    Returns a post's answer
+    """
+    return [" ".join(answer.text.split("\n")) for i, answer in enumerate(req.html.find(".bbcode")) if i > 1]
 
 # --------------
 # NEWS Down Here
@@ -328,4 +413,12 @@ if __name__ == '__main__':
     # spec = return_specific_news_page("https://osu.ppy.sh/home/news/2020-01-05-monthly-beatmapping-contests-return")
     # print()
     # print(f"Full News: {get_full_news_content(spec)}")
+    #
+    # # Test Forum: 15, "https://osu.ppy.sh/community/forums/topics/704698"
+    # print(f"Forum Codes: {get_forums_codes()}")
+    # forums = return_forums_page(15)
+    # print(f"Newest Post: {get_newest_post(forums)}")
+    # post = return_post_page("https://osu.ppy.sh/community/forums/topics/704698")
+    # print(f"Question: {get_post_question(post)}")
+    # print(f"Answers: {get_post_answers(post)}")
     pass
