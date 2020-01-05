@@ -38,7 +38,67 @@ class Global:
         "plays",
         "likes"
     ]
+    date = [
+        "title",
+        "content",
+        "date",
+        "link"
+    ]
 
+# --------------
+# NEWS Down Here
+# -------------
+
+
+# Base News URL --> https://osu.ppy.sh/home
+def return_home_page() -> HTMLSession:
+    """
+    Returns a request to osu's news page that can be used with the other functions that this repository offers
+    """
+    session = HTMLSession()
+    req = session.get("https://osu.ppy.sh/home/news")
+    req.html.render()
+    return req
+
+
+def get_most_recent_news(req: HTMLSession) -> Dict[str, str]:
+    """
+    Returns a dictionary with the most recent news' title, content and date
+    """
+    title = req.html.find(".news-card__title")[0].text
+    content = req.html.find(".news-card__preview")[0].text
+    date = req.html.find(".news-card__time")[0].text
+    link = req.html.find(".news-card")[0].attrs["href"]
+    return dict(zip(Global.date, [title, content, date, link]))
+
+
+def get_news_at_index(req: HTMLSession, index: int) -> Union[Dict[str, str], None]:
+    """
+    Returns a dictionary with the title, content and date of the news at given index
+    Returns None if index is greater than 10, for pagination purposes
+    """
+    if index < 11:
+        title = req.html.find(".news-card__title")[index].text
+        content = req.html.find(".news-card__preview")[index].text
+        date = req.html.find(".news-card__time")[index].text
+        link = req.html.find(".news-card")[0].attrs["href"]
+        return dict(zip(Global.date, [title, content, date, link]))
+    else:
+        return None
+
+
+def return_specific_news_page(url: str) -> HTMLSession:
+    """
+    Returns a request to a specific news page that can be used with the other functions that this repository offers
+    """
+    session = HTMLSession()
+    req = session.get(url)
+    req.html.render()
+    return req
+
+
+def get_full_news_content(req: HTMLSession) -> str:
+    return req.html.find(".osu-md")[0].text
 
 # --------------
 # MAPS Down Here
@@ -230,28 +290,39 @@ def get_player_favorite_maps(req: HTMLSession) -> Union[List[str], int]:
 
 
 if __name__ == '__main__':
-    req = return_player_profile(input("User: "))
-    print()
-    print(f"Stats: {get_player_stats(req)}\n")
-    print(f"Score Count: {get_player_score_count(req)}\n")
-    print(f"Best Score: {get_player_best_score(req)}\n")
-    print(f"First Places: {get_player_first_place_plays(req)}\n")
-    print(f"Most Played Map: {get_player_most_played_map(req)}\n")
-    print(f"Favorite Maps: {get_player_favorite_maps(req)}\n")
-    print(f"PlayStyle: {get_player_playstyle(req)}\n")
-    print(f"Socials: {get_player_socials(req)}\n")
-    print(f"About: {get_player_about(req)}\n")
-    print("\n\n\n")
-    
-    # Test Code: 1078502
-    code = int(input("Code: "))
-    map = return_mapset_page(code)
-    print()
-    diffs = get_mapset_difficulty_codes(map)
-    print(f"Difficulties: {diffs}")
-    diff = return_specific_mapset_difficulty(code, diffs[2])
-    print(f"Difficulty selected: {diff.url}")
-    print(f"Diff Stats: {get_difficulty_stats(diff)}")
-    print(f"Map Stats: {get_mapset_stats(map)}")
-    print(f"Map Likes: {get_mapset_likes(map)}")
-    print(f"Description: {get_mapset_description(map)}")
+    # # Test Player: ZenT3600
+    # req = return_player_profile(input("User: "))
+    # print()
+    # print(f"Stats: {get_player_stats(req)}\n")
+    # print(f"Score Count: {get_player_score_count(req)}\n")
+    # print(f"Best Score: {get_player_best_score(req)}\n")
+    # print(f"First Places: {get_player_first_place_plays(req)}\n")
+    # print(f"Most Played Map: {get_player_most_played_map(req)}\n")
+    # print(f"Favorite Maps: {get_player_favorite_maps(req)}\n")
+    # print(f"PlayStyle: {get_player_playstyle(req)}\n")
+    # print(f"Socials: {get_player_socials(req)}\n")
+    # print(f"About: {get_player_about(req)}\n")
+    # print("\n\n\n")
+    #
+    # # Test Code: 1078502
+    # code = int(input("Code: "))
+    # map = return_mapset_page(code)
+    # print()
+    # diffs = get_mapset_difficulty_codes(map)
+    # print(f"Difficulties: {diffs}")
+    # diff = return_specific_mapset_difficulty(code, diffs[2])
+    # print(f"Difficulty selected: {diff.url}")
+    # print(f"Diff Stats: {get_difficulty_stats(diff)}")
+    # print(f"Map Stats: {get_mapset_stats(map)}")
+    # print(f"Map Likes: {get_mapset_likes(map)}")
+    # print(f"Description: {get_mapset_description(map)}")
+    #
+    # # Test News: https://osu.ppy.sh/home/news/2020-01-05-monthly-beatmapping-contests-return
+    # news = return_home_page()
+    # print()
+    # print(f"Most Recent News: {get_most_recent_news(news)}")
+    # print(f"News at Index 3: {get_news_at_index(news, 3)}")
+    # spec = return_specific_news_page("https://osu.ppy.sh/home/news/2020-01-05-monthly-beatmapping-contests-return")
+    # print()
+    # print(f"Full News: {get_full_news_content(spec)}")
+    pass
