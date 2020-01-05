@@ -70,6 +70,49 @@ class Global:
         "timeago",
         "link"
     ]
+    leaderboards = {
+        0: "performance",
+        1: "score",
+        2: "country"
+    }
+
+# ----------------------
+# LEADERBOARDS Down Here
+# ----------------------
+
+def get_leaderboards_codes() -> Dict[int, str]:
+    """
+    Returns a dictionary containing the available leaderboard codes
+    """
+    return Global.leaderboards
+
+
+def return_leaderboards_page(code: int) -> HTMLSession:
+    """
+    Returns a request to osu's leaderboard page that can be used with the other functions that this repository offers
+    """
+    session = HTMLSession()
+    req = session.get(f"https://osu.ppy.sh/rankings/osu/{Global.leaderboards[code]}")
+    req.html.render()
+    return req
+
+
+def get_n_leaderboard_spots(req: HTMLSession, n: int) -> List[str]:
+    """
+    Returns as leaderboard spots as n in an ordered list
+    Returns None if n is >= 50
+    """
+    if n >= 50:
+        return None
+    tops = []
+    if req.html.find(".ranking-page-table__user-link-text"):
+        for i in range(n):
+            tops.append(req.html.find(".ranking-page-table__user-link-text")[i].text.strip())
+    else:
+        for i in range(n):
+            tops.append(req.html.find(".ranking-page-table__country-link-text")[i].text.strip())
+    return tops
+
 
 # --------------
 # FORUM Down Here
@@ -421,4 +464,13 @@ if __name__ == '__main__':
     # post = return_post_page("https://osu.ppy.sh/community/forums/topics/704698")
     # print(f"Question: {get_post_question(post)}")
     # print(f"Answers: {get_post_answers(post)}")
+    #
+    # # Test Leader: None
+    # print(f"Forum Codes: {get_leaderboards_codes()}")
+    # leader = return_leaderboards_page(0)
+    # print(f"Top 3 pp: {get_n_leaderboard_spots(leader, 3)}")
+    # leader = return_leaderboards_page(1)
+    # print(f"Top 3 Score: {get_n_leaderboard_spots(leader, 3)}")
+    # leader = return_leaderboards_page(2)
+    # print(f"Top 3 Country: {get_n_leaderboard_spots(leader, 3)}")
     pass
