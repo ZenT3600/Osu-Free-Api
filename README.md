@@ -250,6 +250,30 @@ print(api.get_post_answers(post))
 # ['Is it ok to post mixed skin outside osu community?', 'A Lunime user that plays osu!', ..., .., .]
 ```
 
+### Get Leaderboard Codes
+Returns the available leaderboard codes
+```python
+print(api.get_leaderboards_codes())
+# {0: "performance",
+#  1: "score",
+#  2: "country"}
+```
+
+### Return Leaderboard Page
+Returns a request to osu's leaderboard page that can be used with the other functions that this repository offers
+```python
+leader = api.return_leaderboards_page(CODE)
+# Do smoething with leader...
+```
+
+### Get N Leaderboard Spots
+Returns as leaderboard spots as n in an ordered list
+Returns None if n is >= 50
+```python
+print(api.get_n_leaderboard_spots(3))
+#Example: ['WhiteCat', 'Vaxei', 'Alumetri']
+```
+
 
 # Requirements:
 * requests-html
