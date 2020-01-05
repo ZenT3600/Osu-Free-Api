@@ -274,6 +274,43 @@ print(api.get_n_leaderboard_spots(3))
 #Example: ['WhiteCat', 'Vaxei', 'Alumetri']
 ```
 
+### Return LiveStreams Page
+Returns a request to osu's livestreams page that can be used with the other functions that this repository offers
+```python
+streams = api.return_streams_page(CODE)
+# Do smoething with streams...
+```
+
+### Get LiveStreams List
+Returns a list of dictionaries containing the current livestreams' data
+```python
+print(api.get_current_streams(streams))
+# Example: [{'streamer': 'BeasttrollMC',
+#             'viewers': '901'},
+#            {'streamer': 'Aricin98',
+#             'viewers': '134'},
+#            {'streamer': 'customallosu', 'viewers': '69'}]
+```
+
+### Return Contest Page
+Returns a request to osu's livestreams page that can be used with the other functions that this repository offers
+```python
+contests = api.return_contests_page(CODE)
+# Do smoething with contests...
+```
+
+### Get Contests List
+Returns a list of dictionaries containing contests' data
+```python
+print(api.get_contests_list(contests))
+# Example: [{'title': 'Monthly Beatmapping Contests 2020: #1',
+             'date': 'January 3, 2020 - January 26, 2020',
+             'type': 'beatmap'},
+            {'title': 'osu!idol 2019 Finals',
+             'date': 'Ended December 18, 2019',
+             'type': 'music'}
+```
+
 
 # Requirements:
 * requests-html
