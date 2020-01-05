@@ -76,6 +76,60 @@ class Global:
         2: "country"
     }
 
+
+# -------------------
+# CONTESTS Down Here
+# -------------------
+
+def return_contests_page() -> HTMLSession:
+    """
+    Returns a request to osu's contests page that can be used with the other functions that this repository offers
+    """
+    session = HTMLSession()
+    req = session.get("https://osu.ppy.sh/community/contests")
+    req.html.render()
+    return req
+
+
+def get_contests_list(req: HTMLSession) -> List[Dict[str, str]]:
+    """
+    Returns a list of dictionaries containing contests' data
+    """
+    contests = []
+    for i, contest in enumerate(req.html.find(".contest-list-item")):
+        title = req.html.find(".contest-list-item__name")[i].text
+        date = req.html.find(".contest-list-item__date")[i].text
+        type = req.html.find(".contest-list-item__type")[i].text
+        contests.append({"title": title, "date": date, "type": type})
+    return contests
+
+
+# -----------------
+# STREAMS Down Here
+# -----------------
+
+def return_streams_page() -> HTMLSession:
+    """
+    Returns a request to osu's livestreams page that can be used with the other functions that this repository offers
+    """
+    session = HTMLSession()
+    req = session.get("https://osu.ppy.sh/community/livestreams")
+    req.html.render()
+    return req
+
+
+def get_current_streams(req: HTMLSession) -> List[Dict[str, str]]:
+    """
+    Returns a list of dictionaries containing the current livestreams' data
+    """
+    streams = []
+    for i, stream in enumerate(req.html.find(".livestream-item")):
+        streamer = req.html.find(".livestream-item__text")[2 * i].text
+        viewers = req.html.find(".livestream-item__text")[(2 * i) + 1].text
+        streams.append({"streamer": streamer, "viewers": viewers})
+    return streams
+
+
 # ----------------------
 # LEADERBOARDS Down Here
 # ----------------------
@@ -97,7 +151,7 @@ def return_leaderboards_page(code: int) -> HTMLSession:
     return req
 
 
-def get_n_leaderboard_spots(req: HTMLSession, n: int) -> List[str]:
+def get_n_leaderboard_spots(req: HTMLSession, n: int) -> Union[List[str], None]:
     """
     Returns as leaderboard spots as n in an ordered list
     Returns None if n is >= 50
@@ -173,6 +227,7 @@ def get_post_answers(req: HTMLSession) -> List[str]:
     """
     return [" ".join(answer.text.split("\n")) for i, answer in enumerate(req.html.find(".bbcode")) if i > 1]
 
+
 # --------------
 # NEWS Down Here
 # -------------
@@ -231,6 +286,7 @@ def get_full_news_content(req: HTMLSession) -> str:
     """
     return req.html.find(".osu-md")[0].text
 
+
 # --------------
 # MAPS Down Here
 # --------------
@@ -270,8 +326,9 @@ def get_difficulty_stats(req: HTMLSession) -> Dict[str, str]:
     Returns a dictionary containing the stats for a specific difficulty
     """
     return dict(zip(Global.diffstats, [
-        stat.text for stat in req.html.find(".beatmap-basic-stats__entry")] + [stat.text for stat in req.html.find(".beatmap-stats-table__value")
-                    ]))
+        stat.text for stat in req.html.find(".beatmap-basic-stats__entry")] + [stat.text for stat in req.html.find(
+        ".beatmap-stats-table__value")
+                                                                               ]))
 
 
 def get_mapset_description(req: HTMLSession) -> str:
@@ -296,6 +353,7 @@ def get_mapset_likes(req: HTMLSession) -> Dict[str, str]:
     Returns both the likes and plays a mapset has
     """
     return dict(zip(Global.likes, [like.text for like in req.html.find(".beatmapset-header__value-name")]))
+
 
 # -----------------
 # PLAYERS Down Here
@@ -384,7 +442,7 @@ def get_player_playstyle(req: HTMLSession) -> Union[str, None]:
         return req.html.find(".profile-links__item")[2].find("span")[0].text
     except:
         return None
-    
+
 
 def get_player_socials(req: HTMLSession) -> List[str]:
     """
@@ -415,7 +473,8 @@ def get_player_favorite_maps(req: HTMLSession) -> Union[List[str], int]:
     Return a list containing the player's favorite maps
     """
     try:
-        return [favorite.text for favorite in req.html.find(".osu-layout__col-container")[0].find(".beatmapset-panel__header-text")[::2]]
+        return [favorite.text for favorite in
+                req.html.find(".osu-layout__col-container")[0].find(".beatmapset-panel__header-text")[::2]]
     except:
         return 0
 
@@ -473,4 +532,12 @@ if __name__ == '__main__':
     # print(f"Top 3 Score: {get_n_leaderboard_spots(leader, 3)}")
     # leader = return_leaderboards_page(2)
     # print(f"Top 3 Country: {get_n_leaderboard_spots(leader, 3)}")
+    #
+    # # Test Stream: None
+    # stream = return_streams_page()
+    # print(f"Streams: {get_current_streams(stream)}")
+    #
+    # # Test Contest: None
+    # contest = return_contests_page()
+    # print(f"Contests: {get_contests_list(contest)}")
     pass
