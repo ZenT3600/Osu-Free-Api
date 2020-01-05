@@ -51,7 +51,7 @@ class Global:
 
 
 # Base News URL --> https://osu.ppy.sh/home
-def return_home_page() -> HTMLSession:
+def return_news_page() -> HTMLSession:
     """
     Returns a request to osu's news page that can be used with the other functions that this repository offers
     """
@@ -98,6 +98,9 @@ def return_specific_news_page(url: str) -> HTMLSession:
 
 
 def get_full_news_content(req: HTMLSession) -> str:
+    """
+    Returns The Full Content Of A Specific News
+    """
     return req.html.find(".osu-md")[0].text
 
 # --------------
@@ -318,7 +321,7 @@ if __name__ == '__main__':
     # print(f"Description: {get_mapset_description(map)}")
     #
     # # Test News: https://osu.ppy.sh/home/news/2020-01-05-monthly-beatmapping-contests-return
-    # news = return_home_page()
+    # news = return_news_page()
     # print()
     # print(f"Most Recent News: {get_most_recent_news(news)}")
     # print(f"News at Index 3: {get_news_at_index(news, 3)}")
