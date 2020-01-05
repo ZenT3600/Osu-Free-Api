@@ -154,6 +154,46 @@ print(api.get_mapset_description(map))
 # Example: Idk, something probably
 ```
 
+### Return News Page
+Returns a request to osu's news page that can be used with the other functions that this repository offers
+```python
+news = api.return_news_page()
+# Do something with news...
+```
+
+### Get Most Recent News
+Returns a dictionary with the most recent news' title, content and date
+```python
+print(api.get_most_recent_news(news))
+# Example: {'title': 'Monthly Beatmapping Contests Return',
+#            'content': "It's time for a new way to flaunt your beatmapping capabilities. Find out what it takes to become osu!'s next Elite Mapper!",
+#            'date': '5 Jan 2020', 'link': 'https://osu.ppy.sh/home/news/2020-01-05-monthly-beatmapping-contests-return'}
+```
+
+### Get News At Index
+Returns a dictionary with the title, content and date of the news at given index
+Returns None if index is greater than 10, for pagination purposes
+```python
+print(api.get_news_at_index(news, 3))
+# Example: {'title': 'osu! Mapping Olympiad #3 Results (osu!mania)',
+#            'content': 'The judging for the first osu!mania Mapping Olympiad contest has been completed! Congratulations to PianoLuigi, the first osu!mania Mapping Olympian and our newest Elite Mapper!',
+#            'date': '27 Dec 2019', 'link': 'https://osu.ppy.sh/home/news/2020-01-05-monthly-beatmapping-contests-return'
+```
+
+### Return Specific News Page
+Returns a request to a specific news page that can be used with the other functions that this repository offers
+```python
+spec = api.return_specific_news_page()
+# Do something with spec...
+```
+
+### Get Full News Content
+Returns The Full Content Of A Specific News
+```python
+print(api.get_full_news_content(spec))
+# Idk, something probably
+```
+
 
 # Requirements:
 * requests-html
