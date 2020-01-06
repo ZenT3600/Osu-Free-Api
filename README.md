@@ -304,11 +304,11 @@ Returns a list of dictionaries containing contests' data
 ```python
 print(api.get_contests_list(contests))
 # Example: [{'title': 'Monthly Beatmapping Contests 2020: #1',
-             'date': 'January 3, 2020 - January 26, 2020',
-             'type': 'beatmap'},
-            {'title': 'osu!idol 2019 Finals',
-             'date': 'Ended December 18, 2019',
-             'type': 'music'}
+#             'date': 'January 3, 2020 - January 26, 2020',
+#             'type': 'beatmap'},
+#            {'title': 'osu!idol 2019 Finals',
+#             'date': 'Ended December 18, 2019',
+#             'type': 'music'}
 ```
 
 
